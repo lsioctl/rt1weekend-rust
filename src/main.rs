@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{BufWriter, Write};
 
+mod vector3;
+
 fn main() {
     const IMG_WIDTH: i32 = 256;
     const IMG_HEIGHT: i32 = 256;
