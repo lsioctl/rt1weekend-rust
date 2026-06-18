@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{BufWriter, Write};
 
+mod color;
 mod vector3;
 
 fn main() {
@@ -11,27 +12,22 @@ fn main() {
 
     let f = File::create(IMG_PATH).expect("unable to create file");
 
-    let mut f = BufWriter::new(f);
+    let mut fd = BufWriter::new(f);
 
-    writeln!(f, "P3").expect("unable to write line");
-    writeln!(f, "{}", IMG_WIDTH).expect("unable to write line");
-    writeln!(f, "{}", IMG_HEIGHT).expect("unable to write line");
-    writeln!(f, "255").expect("unable to write line");
+    writeln!(fd, "P3").expect("unable to write line");
+    writeln!(fd, "{}", IMG_WIDTH).expect("unable to write line");
+    writeln!(fd, "{}", IMG_HEIGHT).expect("unable to write line");
+    writeln!(fd, "255").expect("unable to write line");
 
     for i in 0..IMG_HEIGHT {
         for j in 0..IMG_WIDTH {
-            let r = i as f32 / (IMG_WIDTH - 1) as f32;
-            let g = j as f32 / (IMG_HEIGHT - 1) as f32;
-            const B: f32 = 0.0;
+            let pixel_color = color::Color {
+                x: i as f64 / (IMG_WIDTH - 1) as f64,
+                y: j as f64 / (IMG_HEIGHT - 1) as f64,
+                z: 0 as f64,
+            };
 
-            let ir = (255.999 * r) as i32;
-            let ig = (255.999 * g) as i32;
-            let ib = (255.999 * B) as i32;
-
-            writeln!(f, "{} {} {}", ir, ig, ib).expect("unable to write line");
+            color::write_color(&mut fd, &pixel_color);
         }
     }
-
-
-
 }

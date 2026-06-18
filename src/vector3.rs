@@ -9,10 +9,10 @@ use std::ops;
 //  * use a macro to do it like in here:
 //  https://github.com/ryankaplan/vec3/blob/master/src/lib.rs
 #[derive(Debug, PartialEq, Clone, Copy)]
-struct Vector3 {
-    x: f64,
-    y: f64,
-    z: f64
+pub struct Vector3 {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl ops::Add<Vector3> for Vector3 {
@@ -22,7 +22,7 @@ impl ops::Add<Vector3> for Vector3 {
         Vector3 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
-            z: self.z + rhs.z
+            z: self.z + rhs.z,
         }
     }
 }
@@ -34,7 +34,7 @@ impl ops::Sub<Vector3> for Vector3 {
         Vector3 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
-            z: self.z - rhs.z
+            z: self.z - rhs.z,
         }
     }
 }
@@ -46,7 +46,7 @@ impl ops::Mul<f64> for Vector3 {
         Vector3 {
             x: rhs * self.x,
             y: rhs * self.y,
-            z: rhs * self.z
+            z: rhs * self.z,
         }
     }
 }
@@ -75,7 +75,7 @@ fn cross(lhs: Vector3, rhs: Vector3) -> Vector3 {
     Vector3 {
         x: lhs.y * rhs.z - rhs.y * lhs.z,
         y: rhs.x * lhs.z - lhs.x * rhs.z,
-        z: lhs.x * rhs.y - rhs.x * lhs.y
+        z: lhs.x * rhs.y - rhs.x * lhs.y,
     }
 }
 
@@ -91,8 +91,6 @@ fn unit(v: Vector3) -> Vector3 {
     v / len(v)
 }
 
-
-
 #[cfg(test)]
 mod tests {
     // importing names from outer (for mod tests) scope.
@@ -100,14 +98,26 @@ mod tests {
 
     #[test]
     fn test_add() {
-        let v1 = Vector3 {x: 1., y: 2., z: 3.};
-        let v2 = Vector3 {x: 5., y: 6., z: 7.};
-        let v3 = Vector3 {x: 8., y: 9., z: 10.};
+        let v1 = Vector3 {
+            x: 1.,
+            y: 2.,
+            z: 3.,
+        };
+        let v2 = Vector3 {
+            x: 5.,
+            y: 6.,
+            z: 7.,
+        };
+        let v3 = Vector3 {
+            x: 8.,
+            y: 9.,
+            z: 10.,
+        };
 
         let v4 = Vector3 {
             x: v1.x + v2.x,
             y: v1.y + v2.y,
-            z: v1.z + v2.z
+            z: v1.z + v2.z,
         };
 
         let v5 = Vector3 {
@@ -122,14 +132,26 @@ mod tests {
 
     #[test]
     fn test_sub() {
-        let v1 = Vector3 {x: 1., y: 2., z: 3.};
-        let v2 = Vector3 {x: 5., y: 6., z: 7.};
-        let v3 = Vector3 {x: 8., y: 9., z: 10.};
+        let v1 = Vector3 {
+            x: 1.,
+            y: 2.,
+            z: 3.,
+        };
+        let v2 = Vector3 {
+            x: 5.,
+            y: 6.,
+            z: 7.,
+        };
+        let v3 = Vector3 {
+            x: 8.,
+            y: 9.,
+            z: 10.,
+        };
 
         let v4 = Vector3 {
             x: v1.x - v2.x,
             y: v1.y - v2.y,
-            z: v1.z - v2.z
+            z: v1.z - v2.z,
         };
 
         let v5 = Vector3 {
@@ -144,7 +166,11 @@ mod tests {
 
     #[test]
     fn test_mul() {
-        let v1 = Vector3 {x: 1., y: 2., z: 3.};
+        let v1 = Vector3 {
+            x: 1.,
+            y: 2.,
+            z: 3.,
+        };
         let coeff = 5.;
         let target = Vector3 {
             x: coeff * v1.x,
@@ -159,33 +185,61 @@ mod tests {
 
     #[test]
     fn test_dot() {
-        let v1 = Vector3 {x: 2., y: 3., z: 5.};
-        let v2 = Vector3 {x: 6., y: 7., z: 8.};
+        let v1 = Vector3 {
+            x: 2.,
+            y: 3.,
+            z: 5.,
+        };
+        let v2 = Vector3 {
+            x: 6.,
+            y: 7.,
+            z: 8.,
+        };
 
         assert_eq!(dot(v1, v2), v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
     }
 
     #[test]
     fn test_cross() {
-        let v1 = Vector3 {x: 2., y: 3., z: 5.};
-        let v2 = Vector3 {x: 6., y: 7., z: 8.};
+        let v1 = Vector3 {
+            x: 2.,
+            y: 3.,
+            z: 5.,
+        };
+        let v2 = Vector3 {
+            x: 6.,
+            y: 7.,
+            z: 8.,
+        };
 
         let v3 = cross(v1, v2);
 
         let target = Vector3 {
             x: v1.y * v2.z - v2.y * v1.z,
             y: v2.x * v1.z - v1.x * v2.z,
-            z: v1.x * v2.y - v2.x * v1.y
+            z: v1.x * v2.y - v2.x * v1.y,
         };
 
-        assert_eq!(v3, target); 
+        assert_eq!(v3, target);
     }
 
     #[test]
     fn test_cross2() {
-        let index = Vector3 {x: 0.0, y: 0.0, z: -1.0};
-        let major = Vector3 {x: -1.0, y: 0.0, z: 0.0};
-        let thumb = Vector3 {x: 0.0, y: 1.0, z: 0.0};
+        let index = Vector3 {
+            x: 0.0,
+            y: 0.0,
+            z: -1.0,
+        };
+        let major = Vector3 {
+            x: -1.0,
+            y: 0.0,
+            z: 0.0,
+        };
+        let thumb = Vector3 {
+            x: 0.0,
+            y: 1.0,
+            z: 0.0,
+        };
 
         let v3 = cross(index, major);
 
@@ -194,7 +248,11 @@ mod tests {
 
     #[test]
     fn test_unit() {
-        let v1 = Vector3 {x: 20., y: 20., z: 20.};
+        let v1 = Vector3 {
+            x: 20.,
+            y: 20.,
+            z: 20.,
+        };
 
         println!("{:?}", unit(v1));
         println!("{}", len(v1));
