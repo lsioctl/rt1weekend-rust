@@ -5,14 +5,9 @@ use std::io::{BufWriter, Write};
 pub type Color = vector3::Vector3;
 
 pub fn write_color(fd: &mut BufWriter<File>, pixel_color: &Color) {
-    let r = pixel_color.x;
-    let g = pixel_color.y;
-    let b = pixel_color.z;
+    let r = (255.999 * pixel_color.x) as i32;
+    let g = (255.999 * pixel_color.y) as i32;
+    let b = (255.999 * pixel_color.z) as i32;
 
-    // Translate the [0,1] component values to the byte range [0,255].
-    let ir = 255.999 * r;
-    let ig = 255.999 * g;
-    let ib = 255.999 * b;
-
-    writeln!(fd, "{} {} {}", ir, ig, ib).expect("unable to write line");
+    writeln!(fd, "{} {} {}", r, g, b).expect("unable to write line");
 }
