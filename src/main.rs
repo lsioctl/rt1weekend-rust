@@ -19,11 +19,11 @@ fn main() {
     writeln!(fd, "{}", IMG_HEIGHT).expect("unable to write line");
     writeln!(fd, "255").expect("unable to write line");
 
-    for i in 0..IMG_HEIGHT {
-        for j in 0..IMG_WIDTH {
+    for line in 0..IMG_HEIGHT {
+        for col in 0..IMG_WIDTH {
             let pixel_color = color::Color {
-                x: i as f64 / (IMG_WIDTH - 1) as f64,
-                y: j as f64 / (IMG_HEIGHT - 1) as f64,
+                x: col as f64 / (IMG_WIDTH - 1) as f64,
+                y: line as f64 / (IMG_HEIGHT - 1) as f64,
                 z: 0 as f64,
             };
 
