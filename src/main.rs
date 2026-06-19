@@ -20,6 +20,7 @@ fn main() {
     writeln!(fd, "255").expect("unable to write line");
 
     for line in 0..IMG_HEIGHT {
+        println!("Scanlines remaining: {}", IMG_HEIGHT - line);
         for col in 0..IMG_WIDTH {
             let pixel_color = color::Color {
                 x: col as f64 / (IMG_WIDTH - 1) as f64,
@@ -30,4 +31,5 @@ fn main() {
             color::write_color(&mut fd, &pixel_color);
         }
     }
+    println!("Done");
 }
