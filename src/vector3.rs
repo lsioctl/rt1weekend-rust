@@ -87,7 +87,7 @@ fn len(v: Vector3) -> f64 {
     len_squared(v).sqrt()
 }
 
-fn unit(v: Vector3) -> Vector3 {
+pub fn unit(v: Vector3) -> Vector3 {
     v / len(v)
 }
 

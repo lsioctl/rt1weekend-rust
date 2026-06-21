@@ -10,3 +10,4 @@ impl Ray {
         self.origin + time * self.direction
     }
 }
+

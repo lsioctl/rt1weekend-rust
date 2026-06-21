@@ -7,6 +7,7 @@ use crate::vector3::Vector3;
 mod color;
 mod ray;
 mod vector3;
+mod utils;
 
 fn main() {
     const IMG_PATH: &str = "./images/img_001.ppm";
@@ -73,18 +74,14 @@ fn main() {
         println!("Scanlines remaining: {}", image_height - line);
         for col in 0..image_width {
             let pixel_center =
-                pixel00_loc + (line as f64 * pixel_delta_u) + (col as f64 * pixel_delta_v);
+                pixel00_loc + (col as f64 * pixel_delta_u) + (line as f64 * pixel_delta_v);
             let ray_direction = pixel_center - camera_center;
-            let r = Ray {
+            let ray = Ray {
                 origin: camera_center,
                 direction: ray_direction,
             };
 
-            let pixel_color = color::Color {
-                x: 0 as f64,
-                y: 0 as f64,
-                z: 0 as f64,
-            };
+            let pixel_color = utils::blue_to_white_gradient(&ray);
 
             color::write_color(&mut fd, &pixel_color);
         }
