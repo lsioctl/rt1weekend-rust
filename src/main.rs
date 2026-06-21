@@ -10,6 +10,7 @@ mod vector3;
 
 fn main() {
     const IMG_PATH: &str = "./images/img_001.ppm";
+    const N_COLOR: i32 = 255;
 
     let f = File::create(IMG_PATH).expect("unable to create file");
 
@@ -66,7 +67,7 @@ fn main() {
     writeln!(fd, "P3").expect("unable to write line");
     writeln!(fd, "{}", image_width).expect("unable to write line");
     writeln!(fd, "{}", image_height).expect("unable to write line");
-    writeln!(fd, "255").expect("unable to write line");
+    writeln!(fd, "{}", N_COLOR).expect("unable to write line");
 
     for line in 0..image_height {
         println!("Scanlines remaining: {}", image_height - line);
