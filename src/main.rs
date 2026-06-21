@@ -81,7 +81,15 @@ fn main() {
                 direction: ray_direction,
             };
 
-            let pixel_color = utils::blue_to_white_gradient(&ray);
+            let circle_center = Vector3{
+                x: 0 as f64,
+                y: 0 as f64,
+                z: -1 as f64
+            };
+
+            let circle_radius = 0.5 as f64;
+
+            let pixel_color = utils::pixel_color(&circle_center, circle_radius, &ray);
 
             color::write_color(&mut fd, &pixel_color);
         }

@@ -14,11 +14,19 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
 /// 
 pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> bool {
     // and here comes trouble with my lazy operator implementation :D
-    let oc = center - ray.origin;
+    let oc = *center - ray.origin;
     let a = dot(ray.direction, ray.direction);
     let b = -2 as f64 * dot(ray.direction, oc);
     let c = dot(oc, oc) - radius * radius;
     let discriminant = b * b - 4 as f64 * a * c;
 
     discriminant >= 0 as f64
+}
+
+pub fn pixel_color(center: &Vector3, radius: f64, ray: &Ray) -> Vector3 {
+    if hit_sphere(center, radius, ray) {
+        Vector3 { x: 255 as f64, y: 0 as f64, z: 0 as f64 }
+    } else {
+        blue_to_white_gradient(ray)
+    }
 }

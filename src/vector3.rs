@@ -8,6 +8,10 @@ use std::ops;
 //  * to implement operators for litterals or references
 //  * use a macro to do it like in here:
 //  https://github.com/ryankaplan/vec3/blob/master/src/lib.rs
+// TODO: it may be cheap but it could be repeated a lot by pixel,
+// so worth doing something more optimized
+//  see also:
+// https://stackoverflow.com/questions/28005134/how-do-i-implement-the-add-trait-for-a-reference-to-a-struct
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Vector3 {
     pub x: f64,
