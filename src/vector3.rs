@@ -67,7 +67,7 @@ impl ops::Div<f64> for Vector3 {
     }
 }
 
-fn dot(lhs: Vector3, rhs: Vector3) -> f64 {
+pub fn dot(lhs: Vector3, rhs: Vector3) -> f64 {
     lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
 }
 
