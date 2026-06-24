@@ -6,7 +6,7 @@ pub struct Ray {
 }
 
 impl Ray {
-    fn at(&self, time: f64) -> Vector3 {
+    pub fn at(&self, time: f64) -> Vector3 {
         self.origin + time * self.direction
     }
 }

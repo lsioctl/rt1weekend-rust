@@ -12,7 +12,7 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
 ///
 /// Based on the sphere equation x^2 + y^2 + z^2 = radius^2
 /// 
-pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> bool {
+pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> f64 {
     // and here comes trouble with my lazy operator implementation :D
     let oc = *center - ray.origin;
     let a = dot(ray.direction, ray.direction);
@@ -20,12 +20,30 @@ pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> bool {
     let c = dot(oc, oc) - radius * radius;
     let discriminant = b * b - 4 as f64 * a * c;
 
-    discriminant >= 0 as f64
+    if discriminant < 0 as f64 {
+        return -1.0;
+    } else {
+        return (-b - discriminant.sqrt() ) / (2.0 * a);
+    }
 }
 
 pub fn pixel_color(center: &Vector3, radius: f64, ray: &Ray) -> Vector3 {
-    if hit_sphere(center, radius, ray) {
-        Vector3 { x: 255 as f64, y: 0 as f64, z: 0 as f64 }
+    let t = hit_sphere(center, radius, ray);
+    if t > 0 as f64 {
+        // TODO: why camera position and not center ?
+        // TODO: pass camera position as parameter
+        let normal = unit(ray.at(t) - Vector3{
+            x: 0 as f64,
+            y: 0 as f64,
+            z: -1 as f64
+        });
+        
+        // unit is range -1, 1 and we map it to 0, 1 range for color
+        0.5 * Vector3{ 
+            x: normal.x + 1 as f64, 
+            y: normal.y + 1 as f64, 
+            z: normal.z + 1 as f64, 
+        }
     } else {
         blue_to_white_gradient(ray)
     }
