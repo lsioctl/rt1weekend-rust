@@ -83,7 +83,7 @@ fn cross(lhs: Vector3, rhs: Vector3) -> Vector3 {
     }
 }
 
-fn len_squared(v: Vector3) -> f64 {
+pub fn len_squared(v: Vector3) -> f64 {
     v.x.powi(2) + v.y.powi(2) + v.z.powi(2)
 }
 

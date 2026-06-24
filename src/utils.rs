@@ -1,5 +1,5 @@
 use crate::ray::Ray;
-use crate::vector3::{Vector3, unit, dot};
+use crate::vector3::{Vector3, unit, dot, len_squared};
 
 pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
     // Linear interpolation, or "Lerp"
@@ -15,15 +15,15 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
 pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> f64 {
     // and here comes trouble with my lazy operator implementation :D
     let oc = *center - ray.origin;
-    let a = dot(ray.direction, ray.direction);
-    let b = -2 as f64 * dot(ray.direction, oc);
-    let c = dot(oc, oc) - radius * radius;
-    let discriminant = b * b - 4 as f64 * a * c;
+    let a = len_squared(ray.direction);
+    let h = dot(ray.direction, oc);
+    let c = len_squared(oc) - radius * radius;
+    let discriminant = h * h - a * c;
 
     if discriminant < 0 as f64 {
         return -1.0;
     } else {
-        return (-b - discriminant.sqrt() ) / (2.0 * a);
+        return (h - discriminant.sqrt() ) / a;
     }
 }
 
