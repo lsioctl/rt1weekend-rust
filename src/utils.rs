@@ -30,14 +30,8 @@ pub fn hit_sphere(center: &Vector3, radius: f64, ray: &Ray) -> f64 {
 pub fn pixel_color(center: &Vector3, radius: f64, ray: &Ray) -> Vector3 {
     let t = hit_sphere(center, radius, ray);
     if t > 0 as f64 {
-        // TODO: why camera position and not center ?
-        // TODO: pass camera position as parameter
-        let normal = unit(ray.at(t) - Vector3{
-            x: 0 as f64,
-            y: 0 as f64,
-            z: -1 as f64
-        });
-        
+        let normal = unit(ray.at(t) - *center);
+
         // unit is range -1, 1 and we map it to 0, 1 range for color
         0.5 * Vector3{ 
             x: normal.x + 1 as f64, 
