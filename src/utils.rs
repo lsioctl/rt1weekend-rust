@@ -3,6 +3,8 @@ use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::vector3::{Vector3, unit};
 
+const INFINITY: f64 = f64::MAX;
+
 pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
     // Linear interpolation, or "Lerp"
     let unit_direction = unit(ray.direction);
@@ -22,7 +24,7 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
 }
 
 pub fn pixel_color(sphere: &Sphere, ray: &Ray) -> Vector3 {
-    if let Some(hit_record) = sphere.hit(&ray) {
+    if let Some(hit_record) = sphere.hit(&ray, 0 as f64, INFINITY) {
         // unit is range -1, 1 and we map it to 0, 1 range for color
         0.5 * Vector3 {
             x: hit_record.normal.x + 1 as f64,

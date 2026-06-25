@@ -11,7 +11,7 @@ impl Hittable for Sphere {
     ///
     /// Based on the sphere equation x^2 + y^2 + z^2 = radius^2
     ///
-    fn hit(&self, ray: &Ray) -> Option<HitRecord> {
+    fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let oc = self.center - ray.origin;
         let a = len_squared(ray.direction);
         let h = dot(ray.direction, oc);
@@ -19,13 +19,24 @@ impl Hittable for Sphere {
         let discriminant = h * h - a * c;
 
         if discriminant < 0 as f64 {
-            None
-        } else {
-            let t = (h - discriminant.sqrt()) / a;
-            let point = ray.at(t);
-            let normal = (point - self.center) / self.radius;
-
-            Some(HitRecord { point, normal, t })
+            return None;
         }
+
+        let sqrtd = discriminant.sqrt();
+
+        // Find the nearest root that lies in the acceptable range.
+        let mut root = (h - sqrtd) / a;
+        if root <= t_min || t_max <= root {
+            root = (h + sqrtd) / a;
+            if root <= t_min || t_max <= root {
+                return None;
+            }
+        }
+
+        let t = root;
+        let point = ray.at(t);
+        let normal = (point - self.center) / self.radius;
+
+        Some(HitRecord { point, normal, t })
     }
 }
