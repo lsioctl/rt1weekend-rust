@@ -23,15 +23,18 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
         }
 }
 
-pub fn pixel_color(sphere: &Sphere, ray: &Ray) -> Vector3 {
-    if let Some(hit_record) = sphere.hit(&ray, 0 as f64, INFINITY) {
-        // unit is range -1, 1 and we map it to 0, 1 range for color
-        0.5 * Vector3 {
-            x: hit_record.normal.x + 1 as f64,
-            y: hit_record.normal.y + 1 as f64,
-            z: hit_record.normal.z + 1 as f64,
+pub fn pixel_color(world: &Vec<Box<dyn Hittable>>, ray: &Ray) -> Vector3 {
+    for object in world.iter() {
+        if let Some(hit_record) = object.hit(&ray, 0 as f64, INFINITY) {
+            // unit is range -1, 1 and we map it to 0, 1 range for color
+            return 0.5
+                * Vector3 {
+                    x: hit_record.normal.x + 1 as f64,
+                    y: hit_record.normal.y + 1 as f64,
+                    z: hit_record.normal.z + 1 as f64,
+                };
         }
-    } else {
-        blue_to_white_gradient(ray)
     }
+
+    blue_to_white_gradient(ray)
 }

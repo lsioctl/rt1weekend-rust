@@ -8,6 +8,7 @@ mod vector3;
 use std::fs::{File, create_dir_all};
 use std::io::{BufWriter, Write};
 
+use crate::hittable::Hittable;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::vector3::Vector3;
@@ -75,14 +76,25 @@ fn main() {
     writeln!(fd, "{}", image_height).expect("unable to write line");
     writeln!(fd, "{}", N_COLOR).expect("unable to write line");
 
-    let sphere = Sphere {
+    let mut world: Vec<Box<dyn Hittable>> = Vec::new();
+
+    world.push(Box::new(Sphere {
         center: Vector3 {
             x: 0 as f64,
             y: 0 as f64,
             z: -1 as f64,
         },
         radius: 0.5 as f64,
-    };
+    }));
+
+    world.push(Box::new(Sphere {
+        center: Vector3 {
+            x: 0 as f64,
+            y: -100.5 as f64,
+            z: -1 as f64,
+        },
+        radius: 100 as f64,
+    }));
 
     for line in 0..image_height {
         println!("Scanlines remaining: {}", image_height - line);
@@ -95,7 +107,7 @@ fn main() {
                 direction: ray_direction,
             };
 
-            let pixel_color = utils::pixel_color(&sphere, &ray);
+            let pixel_color = utils::pixel_color(&world, &ray);
 
             color::write_color(&mut fd, &pixel_color);
         }
