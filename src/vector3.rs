@@ -75,13 +75,13 @@ pub fn dot(lhs: Vector3, rhs: Vector3) -> f64 {
     lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
 }
 
-fn cross(lhs: Vector3, rhs: Vector3) -> Vector3 {
-    Vector3 {
-        x: lhs.y * rhs.z - rhs.y * lhs.z,
-        y: rhs.x * lhs.z - lhs.x * rhs.z,
-        z: lhs.x * rhs.y - rhs.x * lhs.y,
-    }
-}
+// fn cross(lhs: Vector3, rhs: Vector3) -> Vector3 {
+//     Vector3 {
+//         x: lhs.y * rhs.z - rhs.y * lhs.z,
+//         y: rhs.x * lhs.z - lhs.x * rhs.z,
+//         z: lhs.x * rhs.y - rhs.x * lhs.y,
+//     }
+// }
 
 pub fn len_squared(v: Vector3) -> f64 {
     v.x.powi(2) + v.y.powi(2) + v.z.powi(2)

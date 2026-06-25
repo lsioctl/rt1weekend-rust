@@ -1,19 +1,24 @@
-use std::fs::File;
+mod color;
+mod hittable;
+mod ray;
+mod sphere;
+mod utils;
+mod vector3;
+
+use std::fs::{File, create_dir_all};
 use std::io::{BufWriter, Write};
 
 use crate::ray::Ray;
+use crate::sphere::Sphere;
 use crate::vector3::Vector3;
 
-mod color;
-mod ray;
-mod vector3;
-mod utils;
-
 fn main() {
-    const IMG_PATH: &str = "./images/img_001.ppm";
+    const IMG_DIR: &str = "./images/";
     const N_COLOR: i32 = 255;
 
-    let f = File::create(IMG_PATH).expect("unable to create file");
+    let _ = create_dir_all(IMG_DIR).expect("unable to create img dir");
+    let img_path = format!("{}/img_001.ppm", IMG_DIR);
+    let f = File::create(img_path).expect("unable to create image file");
 
     let mut fd = BufWriter::new(f);
 
@@ -70,6 +75,15 @@ fn main() {
     writeln!(fd, "{}", image_height).expect("unable to write line");
     writeln!(fd, "{}", N_COLOR).expect("unable to write line");
 
+    let sphere = Sphere {
+        center: Vector3 {
+            x: 0 as f64,
+            y: 0 as f64,
+            z: -1 as f64,
+        },
+        radius: 0.5 as f64,
+    };
+
     for line in 0..image_height {
         println!("Scanlines remaining: {}", image_height - line);
         for col in 0..image_width {
@@ -81,15 +95,7 @@ fn main() {
                 direction: ray_direction,
             };
 
-            let circle_center = Vector3{
-                x: 0 as f64,
-                y: 0 as f64,
-                z: -1 as f64
-            };
-
-            let circle_radius = 0.5 as f64;
-
-            let pixel_color = utils::pixel_color(&circle_center, circle_radius, &ray);
+            let pixel_color = utils::pixel_color(&sphere, &ray);
 
             color::write_color(&mut fd, &pixel_color);
         }
