@@ -1,6 +1,6 @@
 use rand::RngExt;
 
-use crate::hittable::Hittable;
+use crate::hittable::{HitRecord, Hittable};
 use crate::ray::Ray;
 use crate::vector3::{Vector3, unit};
 
@@ -38,17 +38,40 @@ pub fn blue_to_white_gradient(ray: &Ray) -> Vector3 {
 }
 
 pub fn pixel_color(world: &Vec<Box<dyn Hittable>>, ray: &Ray) -> Vector3 {
+    let mut t_max = INFINITY;
+    let mut hit_record = HitRecord {
+        point: Vector3 {
+            x: 0 as f64,
+            y: 0 as f64,
+            z: 0 as f64,
+        },
+        normal: Vector3 {
+            x: 0 as f64,
+            y: 0 as f64,
+            z: 0 as f64,
+        },
+        t: 0 as f64,
+    };
+    let mut hit = false;
+
     for object in world.iter() {
-        if let Some(hit_record) = object.hit(&ray, 0 as f64, INFINITY) {
-            // unit is range -1, 1 and we map it to 0, 1 range for color
-            return 0.5
-                * Vector3 {
-                    x: hit_record.normal.x + 1 as f64,
-                    y: hit_record.normal.y + 1 as f64,
-                    z: hit_record.normal.z + 1 as f64,
-                };
+        if let Some(current_hit_record) = object.hit(&ray, 0 as f64, t_max) {
+            hit = true;
+            // update t_max as we may hit object closer to the ray origin later
+            t_max = current_hit_record.t;
+            hit_record = current_hit_record;
         }
     }
 
-    blue_to_white_gradient(ray)
+    match hit {
+        true => {
+            // unit is range -1, 1 and we map it to 0, 1 range for color
+            0.5 * Vector3 {
+                x: hit_record.normal.x + 1 as f64,
+                y: hit_record.normal.y + 1 as f64,
+                z: hit_record.normal.z + 1 as f64,
+            }
+        }
+        false => blue_to_white_gradient(ray),
+    }
 }

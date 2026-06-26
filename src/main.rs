@@ -81,19 +81,19 @@ fn main() {
     world.push(Box::new(Sphere {
         center: Vector3 {
             x: 0 as f64,
-            y: 0 as f64,
+            y: -100.5 as f64,
             z: -1 as f64,
         },
-        radius: 0.5 as f64,
+        radius: 100 as f64,
     }));
 
     world.push(Box::new(Sphere {
         center: Vector3 {
             x: 0 as f64,
-            y: -100.5 as f64,
+            y: 0 as f64,
             z: -1 as f64,
         },
-        radius: 100 as f64,
+        radius: 0.5 as f64,
     }));
 
     for line in 0..image_height {
