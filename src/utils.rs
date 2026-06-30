@@ -1,6 +1,7 @@
 use rand::RngExt;
 
 use crate::hittable::{HitRecord, Hittable};
+use crate::interval::Interval;
 use crate::ray::Ray;
 use crate::vector3::{Vector3, unit};
 
@@ -55,7 +56,13 @@ pub fn pixel_color(world: &Vec<Box<dyn Hittable>>, ray: &Ray) -> Vector3 {
     let mut hit = false;
 
     for object in world.iter() {
-        if let Some(current_hit_record) = object.hit(&ray, 0 as f64, t_max) {
+        if let Some(current_hit_record) = object.hit(
+            &ray,
+            Interval {
+                min: 0 as f64,
+                max: t_max,
+            },
+        ) {
             hit = true;
             // update t_max as we may hit object closer to the ray origin later
             t_max = current_hit_record.t;
